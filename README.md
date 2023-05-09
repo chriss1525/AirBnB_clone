@@ -1,3 +1,5 @@
 # AirBnb Clone
 
-This is a clone of the Airbnb console
+## Project description
+
+This is a clone of the AirBnB platform
