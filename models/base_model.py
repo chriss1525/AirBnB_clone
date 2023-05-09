@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 This is our base model
-takes in public instances attributes id,created_at 
+takes in public instances attributes id,created_at
 and updated at.
 """
 from uuid import uuid4
@@ -10,7 +10,7 @@ from datetime import datetime
 
 class BaseModel:
     """
-    BaseModel describes public instance attributes id, 
+    BaseModel describes public instance attributes id,
     created_at and updated at
     """
 
@@ -25,7 +25,8 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def __str__(self):
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__,
+                                     self.id, self.__dict__)
 
     def to_dict(self):
         obj_dict = self.__dict__.copy()  # Create a copy of instance attributes
