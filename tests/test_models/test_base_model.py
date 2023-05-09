@@ -43,6 +43,18 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(model_dict['created_at'], str)
         self.assertIsInstance(model_dict['updated_at'], str)
 
+    def test_id(self):
+        # Create two BaseModel instances
+        model1 = BaseModel()
+        model2 = BaseModel()
+
+        # Test that their ids are unique
+        self.assertNotEqual(model1.id, model2.id)
+
+        # Test that their ids are of the correct type
+        self.assertIsInstance(model1.id, str)
+        self.assertIsInstance(model2.id, str)
+
 
 if __name__ == '__main__':
     unittest.main()
