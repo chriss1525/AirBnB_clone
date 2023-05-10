@@ -6,6 +6,7 @@ and updated at.
 """
 from uuid import uuid4
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -30,10 +31,12 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """update class updated_at everytime the object is changed"""
         self.updated_at = datetime.now()
+        storage.save()
 
     def __str__(self):
         return "[{}] ({}) {}".format(type(self).__name__,
