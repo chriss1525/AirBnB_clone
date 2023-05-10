@@ -24,38 +24,44 @@ class TestBaseModel(unittest.TestCase):
         self.assertNotEqual(model.created_at, updated_at)
 
     def test_to_dict_contains_all_attributes(self):
-        """Create an instance of BaseModel"""
+        """confirm dictionary contains all expected keys"""
+
+        # Create an instance of BaseModel
         model = BaseModel()
 
-        """Convert the model to a dictionary"""
+        # Convert the model to a dictionary
         model_dict = model.to_dict()
 
-        """Check that the dictionary contains all expected keys"""
+        # Check that the dictionary contains all expected keys
         self.assertIn('id', model_dict)
         self.assertIn('created_at', model_dict)
         self.assertIn('updated_at', model_dict)
         self.assertIn('__class__', model_dict)
 
     def test_to_dict_datetime_formatting(self):
-        """Create an instance of BaseModel"""
+        """confirm created_at and updated_at are strings"""
+
+        # """Create an instance of BaseModel"""
         model = BaseModel()
 
-        """Convert the model to a dictionary"""
+        # """Convert the model to a dictionary"""
         model_dict = model.to_dict()
 
-        """Check that created_at and updated_at are in ISO format strings"""
+        # Check that created_at and updated_at are moved from iSO format to strings
         self.assertIsInstance(model_dict['created_at'], str)
         self.assertIsInstance(model_dict['updated_at'], str)
 
     def test_id(self):
-        """Create two BaseModel instances"""
+        """Confirm model ids are unique and the correct type (strings)"""
+
+        # Create two BaseModel instances
         model1 = BaseModel()
         model2 = BaseModel()
 
-        """Test that their ids are unique"""
+        # Test that their ids are unique
         self.assertNotEqual(model1.id, model2.id)
 
-        """Test that their ids are of the correct type"""
+        # Test that their ids are of the correct type
         self.assertIsInstance(model1.id, str)
         self.assertIsInstance(model2.id, str)
 
