@@ -14,11 +14,22 @@ class BaseModel:
     created_at and updated at
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """declare attributes"""
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+
+        if kwargs:
+            for attr, value in kwargs.items():
+                if attr == "created_at" or attr == "updated_at":
+                    setattr(self, attr, datetime.fromisoformat(value))
+                    continue
+
+                if attr != "__class__":
+                    setattr(self, attr, value)
+
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def save(self):
         """update class updated_at everytime the object is changed"""
