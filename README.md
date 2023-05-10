@@ -27,10 +27,8 @@ The console application provides a wide range of functionalities, including crea
 - Create, update, and delete property listings
 - View property listings and filter by location, price, etc.
 - Manage user accounts, including registration, login, and profile management
-- Advanced search functionality for properties
 - Booking management for users and property owners
 - Review and rating system for properties
-- Messaging system between users and property owners
 
 ### Installation
 
@@ -74,9 +72,4 @@ For a full list of available commands and options, refer to the documentation or
 
 ## Contributing
 
-Contributions to the Airbnb Clone Console project are welcome! If you would like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Develop and test your code changes
-4. Submit a pull request with a description of your changes.
+This is a class project for the ALX SWE course. Contributions are not welcome.
