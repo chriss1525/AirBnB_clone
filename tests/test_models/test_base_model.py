@@ -2,6 +2,7 @@
 """This test module defines tests for base_model.py"""
 
 import unittest
+import os
 from models.base_model import BaseModel
 
 
@@ -81,6 +82,17 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_model.name, my_new_model.name)
         self.assertEqual(my_model.id, my_new_model.id)
         self.assertEqual(my_model.my_number, my_new_model.my_number)
+
+    def test_save_objects_to_file(self):
+        """Tests whether FileStorage can save JSON to a file"""
+
+        # create new model
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+        my_model.save()
+
+        self.assertTrue(os.path.exists("file.json"))
 
 
 if __name__ == '__main__':
