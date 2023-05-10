@@ -6,17 +6,21 @@ from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
+    """Test suite for the model BaseModel"""
+
     def test_save_updates_updated_at(self):
-        """Create an instance of BaseModel"""
+        """Confirm that the attribute updated_at is updated when the method
+        save is called"""
+
         model = BaseModel()
 
-        """Save the model"""
+        # save the model to file
         model.save()
 
-        """Get the updated_at attribute"""
+        # Get the updated_at attribute
         updated_at = model.updated_at
 
-        """Check that updated_at has been updated"""
+        # Check that updated_at has been updated
         self.assertNotEqual(model.created_at, updated_at)
 
     def test_to_dict_contains_all_attributes(self):
@@ -54,6 +58,23 @@ class TestBaseModel(unittest.TestCase):
         """Test that their ids are of the correct type"""
         self.assertIsInstance(model1.id, str)
         self.assertIsInstance(model2.id, str)
+
+    def test_recreate_instance_from_dictionary(self):
+        """Test the recreation of instances using values from a dictionary"""
+
+        # create first instance of BaseModel
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+        my_model_json = my_model.to_dict()
+
+        # create second instance of BaseModel using json
+        my_new_model = BaseModel(**my_model_json)
+
+        # test equality of attribute values
+        self.assertEqual(my_model.name, my_new_model.name)
+        self.assertEqual(my_model.id, my_new_model.id)
+        self.assertEqual(my_model.my_number, my_new_model.my_number)
 
 
 if __name__ == '__main__':
