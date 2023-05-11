@@ -28,7 +28,11 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """create command creates a new instance of a specified class"""
+        """create command creates a new instance of a specified class
+
+        example usage:
+        (hbnb) create BaseModel
+        """
 
         if not arg:
             print('** class name missing **')
@@ -86,6 +90,44 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
         else:
             print('** class name missing **')
+
+    def do_destroy(self, arg):
+        """destroys an instance of a class based on the class
+        name and id.
+
+        example usage:
+        (hbnb) destroy BaseModel 1234-5665-4321
+        """
+        # split arguement on white space and save the array
+        args = arg.split()
+
+        # check if the array has content
+        if args:
+            # check if 2 arguments were passed
+            if len(args) == 2:
+                # store first argument as class_name
+                class_name = args[0]
+                # store second arguement in instance_id
+                instance_id = args[1]
+
+                # check if valid class_name
+                if class_name not in ["BaseModel"]:
+                    print('** class doesn\'t exist **')
+                    return
+
+                # retrieve all records in storage
+                all = storage.all()
+
+                # check for matching record
+                try:
+                    record = class_name + "." + instance_id
+
+                    if record in all:
+                        del all[record]
+                except Exception:
+                    print("** no instance found **")
+            else:
+                print("** instance id missing **")
 
 
 if __name__ == '__main__':
