@@ -44,39 +44,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = BaseModel()
-
         new_instance.save()
         print(new_instance.id)
-
-    def get_args(self, arg):
-        args = arg.split()
-
-        # check if the array has content
-        if args:
-            # check if 2 arguments were passed
-            if len(args) == 2:
-                return args
-            else:
-                print("** instance id missing **")
-        else:
-            print('** class name missing **')
-        return None
-
-    def find_record(self, class_name, instance_id):
-        # retrieve all records in storage
-        all = storage.all()
-
-        # check if valid class_name
-        if class_name not in ["BaseModel"]:
-            print('** class doesn\'t exist **')
-            return
-
-        # check for matching record
-        try:
-            record = all[class_name + "." + instance_id]
-            return record
-        except Exception:
-            print("** no instance found **")
 
     def do_show(self, arg):
         """Prints the string representation of an instance based on the class
@@ -107,13 +76,86 @@ class HBNBCommand(cmd.Cmd):
 
         [class_name, instance_id] = self.get_args(arg)
 
-        # check for matching record
+        # destroy matching record
         try:
             record = self.find_record(class_name, instance_id)
             retrieved_record = globals()[class_name](**record)
             storage.destroy(retrieved_record)
         except Exception:
             pass
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file)
+
+        example usage:
+        (hbnb) update BaseModel 1234-5676-4321 email "aibnb@mail.com" """
+
+        args = self.get_update_args(arg)
+        print(args)
+
+    def get_update_args(self, arg):
+        args = arg.split()
+
+        if args:
+            if len(args) > 1:
+                if len(args) > 2:
+                    if len(args) > 3:
+                        return [*args[:3] + [self.get_value(args)]]
+                    else:
+                        print("** value missing **")
+                else:
+                    print("** attribute name missing **")
+            else:
+                print("** instance id missing **")
+        else:
+            print('** class name missing **')
+
+    def get_value(self, args):
+        found = False
+        arr = " ".join([str(item) for item in args[3:]])
+        value = ""
+
+        for j in arr:
+            if found and j == '"':
+                found = not found
+                break
+            elif not found and j == '"':
+                found = not found
+            else:
+                value += j
+
+        return value
+
+    def get_args(self, arg):
+        args = arg.split()
+
+        # check if the array has content
+        if args:
+            # check if 2 arguments were passed
+            if len(args) == 2:
+                return args
+            else:
+                print("** instance id missing **")
+        else:
+            print('** class name missing **')
+        return None
+
+    def find_record(self, class_name, instance_id):
+        # retrieve all records in storage
+        all = storage.all()
+
+        # check if valid class_name
+        if class_name not in ["BaseModel"]:
+            print('** class doesn\'t exist **')
+            return
+
+        # check for matching record
+        try:
+            record = all[class_name + "." + instance_id]
+            return record
+        except Exception:
+            print("** no instance found **")
 
 
 if __name__ == '__main__':
