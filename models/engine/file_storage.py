@@ -40,7 +40,7 @@ class FileStorage:
         self.save()
 
     def destroy(self, obj):
-        """destroys entry in __objects the obj with the key <objclassname>.id"""
+        """destroys entry in __objects with the key <objclassname>.id"""
 
         name = obj.__class__.__name__ + "." + obj.id
         del self.__objects[name]
@@ -58,4 +58,3 @@ class FileStorage:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as f:
                 self.__objects = json.load(f)
-
