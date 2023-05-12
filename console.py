@@ -85,6 +85,36 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             pass
 
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
+
+        example usage:
+        (hbnb) all
+        (hbnb) all BaseModel
+        """
+
+        if not arg:
+            # Print all instances
+            instances = storage.all()
+            instance_list = []
+            for instance in instances.values():
+                instance_list.append(str(instance))
+            print(instance_list)
+        else:
+            class_name = arg.strip()
+            if class_name not in ["BaseModel"]:
+                print('** class doesn\'t exist **')
+                return
+            # Print instances of a specific class
+            file_storage = storage._FileStorage__objects
+            instance_list = []
+            for instance in file_storage.values():
+                if instance['__class__'] == "BaseModel":
+                    instance_list.append(str(instance))
+            print(instance_list)
+
     def do_update(self, arg):
         """Updates an instance based on the class name and id by adding or
         updating attribute (save the change into the JSON file)
