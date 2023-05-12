@@ -106,8 +106,14 @@ class HBNBCommand(cmd.Cmd):
         """
 
         [class_name, instance_id] = self.get_args(arg)
-        record = self.find_record(class_name, instance_id)
-        del record
+
+        # check for matching record
+        try:
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            storage.destroy(retrieved_record)
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':

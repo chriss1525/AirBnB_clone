@@ -38,6 +38,13 @@ class FileStorage:
         name = obj.__class__.__name__ + "." + obj.id
         self.__objects[name] = obj.to_dict()
 
+    def destroy(self, obj):
+        """destroys entry in __objects the obj with the key <objclassname>.id"""
+
+        name = obj.__class__.__name__ + "." + obj.id
+        del self.__objects[name]
+        self.save()
+
     def save(self):
         """serializes __objects to the JSON file __file_path"""
 
