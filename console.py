@@ -48,6 +48,36 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
+    def get_args(self, arg):
+        args = arg.split()
+
+        # check if the array has content
+        if args:
+            # check if 2 arguments were passed
+            if len(args) == 2:
+                return args
+            else:
+                print("** instance id missing **")
+        else:
+            print('** class name missing **')
+        return None
+
+    def find_record(self, class_name, instance_id):
+        # retrieve all records in storage
+        all = storage.all()
+
+        # check if valid class_name
+        if class_name not in ["BaseModel"]:
+            print('** class doesn\'t exist **')
+            return
+
+        # check for matching record
+        try:
+            record = all[class_name + "." + instance_id]
+            return record
+        except Exception:
+            print("** no instance found **")
+
     def do_show(self, arg):
         """Prints the string representation of an instance based on the class
         name and id.
@@ -56,40 +86,16 @@ class HBNBCommand(cmd.Cmd):
         (hbnb) show BaseModel 1234-5665-4321
         """
 
-        # split arguement on white space and save the array
-        args = arg.split()
+        try:
+            [class_name, instance_id] = self.get_args(arg)
 
-        # check if the array has content
-        if args:
-            # check if 2 arguments were passed
-            if len(args) == 2:
-                # store first argument as class_name
-                class_name = args[0]
-                # store second arguement in instance_id
-                instance_id = args[1]
-
-                # check if valid class_name
-                if class_name not in ["BaseModel"]:
-                    print('** class doesn\'t exist **')
-                    return
-
-                # retrieve all records in storage
-                all = storage.all()
-
-                # check for matching record
-                try:
-                    record = all[class_name + "." + instance_id]
-
-                    # use globals() to extract string stored in class_name
-                    # and use it to create instance using the record
-                    retrieved_record = globals()[class_name](**record)
-                    print(retrieved_record)
-                except Exception:
-                    print("** no instance found **")
-            else:
-                print("** instance id missing **")
-        else:
-            print('** class name missing **')
+            # use globals() to extract string stored in class_name
+            # and use it to create instance using the record
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            print(retrieved_record)
+        except Exception:
+            pass
 
     def do_destroy(self, arg):
         """destroys an instance of a class based on the class
@@ -98,36 +104,10 @@ class HBNBCommand(cmd.Cmd):
         example usage:
         (hbnb) destroy BaseModel 1234-5665-4321
         """
-        # split arguement on white space and save the array
-        args = arg.split()
 
-        # check if the array has content
-        if args:
-            # check if 2 arguments were passed
-            if len(args) == 2:
-                # store first argument as class_name
-                class_name = args[0]
-                # store second arguement in instance_id
-                instance_id = args[1]
-
-                # check if valid class_name
-                if class_name not in ["BaseModel"]:
-                    print('** class doesn\'t exist **')
-                    return
-
-                # retrieve all records in storage
-                all = storage.all()
-
-                # check for matching record
-                try:
-                    record = class_name + "." + instance_id
-
-                    if record in all:
-                        del all[record]
-                except Exception:
-                    print("** no instance found **")
-            else:
-                print("** instance id missing **")
+        [class_name, instance_id] = self.get_args(arg)
+        record = self.find_record(class_name, instance_id)
+        del record
 
 
 if __name__ == '__main__':
