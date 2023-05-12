@@ -4,6 +4,7 @@
 import cmd
 from models import storage
 from models.base_model import BaseModel
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -91,8 +92,15 @@ class HBNBCommand(cmd.Cmd):
         example usage:
         (hbnb) update BaseModel 1234-5676-4321 email "aibnb@mail.com" """
 
-        args = self.get_update_args(arg)
-        print(args)
+        [class_name, instance_id, attribute, value] = self.get_update_args(arg)
+        try:
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            setattr(retrieved_record, attribute, value)
+            setattr(retrieved_record, "updated_at", datetime.now())
+            storage.new(retrieved_record)
+        except Exception:
+            pass
 
     def get_update_args(self, arg):
         args = arg.split()

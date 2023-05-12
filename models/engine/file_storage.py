@@ -37,6 +37,7 @@ class FileStorage:
 
         name = obj.__class__.__name__ + "." + obj.id
         self.__objects[name] = obj.to_dict()
+        self.save()
 
     def destroy(self, obj):
         """destroys entry in __objects the obj with the key <objclassname>.id"""
