@@ -5,6 +5,7 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 from datetime import datetime
+import sys
 
 
 class HBNBCommand(cmd.Cmd):
@@ -18,6 +19,13 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = '(hbnb) '
+
+    def emptyline(self):
+        """
+        Override the default emptyline method to avoid repeating the last command
+        when an empty line is entered.
+        """
+        pass
 
     def do_quit(self, arg):
         """type quit to exit the program"""
@@ -34,9 +42,8 @@ class HBNBCommand(cmd.Cmd):
         example usage:
         (hbnb) create BaseModel
         """
-
         if not arg:
-            print('** class name missing **')
+            print('** class name missing ** ')
             return
 
         class_name = arg.strip()
