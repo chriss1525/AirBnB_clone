@@ -7,6 +7,11 @@ from models import storage
 from models.base_model import BaseModel
 import sys
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -49,12 +54,22 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = arg.strip()
         class_name = arg.strip()
-        if class_name not in ["BaseModel", "User"]:
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print('** class doesn\'t exist **')
             return
 
         if class_name == "User":
             new_instance = User()
+        elif class_name == "State":
+            new_instance = State()
+        elif class_name == "City":
+            new_instance = City()
+        elif class_name == "Place":
+            new_instance = Place()
+        elif class_name == "Amenity":
+            new_instance = Amenity()
+        elif class_name == "Review":
+            new_instance = Review()
         else:
             new_instance = BaseModel()
 
@@ -99,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return
 
-        if class_name not in ["BaseModel", "User"]:
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print('** class doesn\'t exist **')
             return
 
@@ -138,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
             print(instance_list)
         else:
             class_name = arg.strip()
-            if class_name not in ["BaseModel", "User"]:
+            if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
                 print('** class doesn\'t exist **')
                 return
             # Print instances of a specific class
@@ -156,13 +171,31 @@ class HBNBCommand(cmd.Cmd):
         example usage:
         (hbnb) update BaseModel 1234-5676-4321 email "aibnb@mail.com" """
 
-        [class_name, instance_id, attribute, value] = self.get_update_args(arg)
+        args = self.get_update_args(arg)
+
+        if args is None:
+            return
+
+        [class_name, instance_id, attribute, value] = args
+
+        if class_name is None:
+            print('** class name missing **')
+            return
+
+        if instance_id is None:
+            print('** instance id missing **')
+            return
+
         try:
             record = self.find_record(class_name, instance_id)
+            if record is None:
+                print('** no instance found **')
+                return
+
             retrieved_record = globals()[class_name](**record)
             setattr(retrieved_record, attribute, value)
             setattr(retrieved_record, "updated_at", datetime.now())
-            storage.new(retrieved_record)
+            storage.save()
         except Exception:
             pass
 
@@ -218,7 +251,7 @@ class HBNBCommand(cmd.Cmd):
         all = storage.all()
 
         # check if valid class_name
-        if class_name not in ["BaseModel", "User"]:
+        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
             print('** class doesn\'t exist **')
             return
 

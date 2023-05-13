@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+"""This test module defines tests for user.py"""
+
 import unittest
 from models.user import User
 from models import storage
@@ -6,6 +9,14 @@ from models import storage
 class TestUser(unittest.TestCase):
     def setUp(self):
         storage.reload()
+    
+    def test_save_(self):
+        """Confirm that the attribute is stored in storage"""
+
+        model = User()
+
+        # save the model to file
+        model.save()
 
     def test_user_attributes(self):
         user = User()
