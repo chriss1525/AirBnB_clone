@@ -75,18 +75,39 @@ class HBNBCommand(cmd.Cmd):
             pass
 
     def do_destroy(self, arg):
-        """destroys an instance of a class based on the class
-        name and id.
+        """Destroys an instance of a class based on the class name and id.
 
-        example usage:
+        Example usage:
         (hbnb) destroy BaseModel 1234-5665-4321
         """
 
-        [class_name, instance_id] = self.get_args(arg)
+        args = self.get_args(arg)
 
-        # destroy matching record
+        if args is None:
+            print('** class name missing **')
+            return
+
+        [class_name, instance_id] = args
+
+        if not class_name:
+            print('** class name missing **')
+            return
+
+        if class_name not in ["BaseModel"]:
+            print('** class doesn\'t exist **')
+            return
+
+        if not instance_id:
+            print('** instance id missing **')
+            return
+
+        record = self.find_record(class_name, instance_id)
+
+        if record is None:
+            print('** no instance found **')
+            return
+
         try:
-            record = self.find_record(class_name, instance_id)
             retrieved_record = globals()[class_name](**record)
             storage.destroy(retrieved_record)
         except Exception:
