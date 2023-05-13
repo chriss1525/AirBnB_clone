@@ -2,10 +2,11 @@
 """This module hosts the HBNBCommand class which inherits from the Cmd class.
 """
 import cmd
+from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
-from datetime import datetime
 import sys
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -47,11 +48,16 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = arg.strip()
-        if class_name not in ["BaseModel"]:
+        class_name = arg.strip()
+        if class_name not in ["BaseModel", "User"]:
             print('** class doesn\'t exist **')
             return
 
-        new_instance = BaseModel()
+        if class_name == "User":
+            new_instance = User()
+        else:
+            new_instance = BaseModel()
+
         new_instance.save()
         print(new_instance.id)
 
@@ -93,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return
 
-        if class_name not in ["BaseModel"]:
+        if class_name not in ["BaseModel", "User"]:
             print('** class doesn\'t exist **')
             return
 
@@ -132,14 +138,14 @@ class HBNBCommand(cmd.Cmd):
             print(instance_list)
         else:
             class_name = arg.strip()
-            if class_name not in ["BaseModel"]:
+            if class_name not in ["BaseModel", "User"]:
                 print('** class doesn\'t exist **')
                 return
             # Print instances of a specific class
             file_storage = storage._FileStorage__objects
             instance_list = []
             for instance in file_storage.values():
-                if instance['__class__'] == "BaseModel":
+                if instance['__class__'] == class_name:
                     instance_list.append(str(instance))
             print(instance_list)
 
@@ -212,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
         all = storage.all()
 
         # check if valid class_name
-        if class_name not in ["BaseModel"]:
+        if class_name not in ["BaseModel", "User"]:
             print('** class doesn\'t exist **')
             return
 
