@@ -15,6 +15,38 @@ class BaseModel:
     created_at and updated at
     """
 
+    @classmethod
+    def update(cls, params):
+        for obj in storage.all().values():
+            if obj["id"] == params[0] and obj["__class__"] == cls.__name__:
+                obj[params[1]] = params[2]
+                storage.new(cls(**obj))
+
+    @classmethod
+    def destroy(cls, id):
+        for obj in storage.all().values():
+            if obj["id"] == id[0] and obj["__class__"] == cls.__name__:
+                storage.destroy(cls(**obj))
+
+    @classmethod
+    def show(cls, id):
+        for obj in storage.all().values():
+            if obj["id"] == id[0] and obj["__class__"] == cls.__name__:
+                return cls(**obj).__str__()
+
+    @classmethod
+    def count(cls):
+        return len(cls.all())
+
+    @classmethod
+    def all(cls):
+        all = []
+        for obj in storage.all().values():
+            if obj["__class__"] == cls.__name__:
+                instance = cls(**obj)
+                all.append(instance.__str__())
+        return all
+
     def __init__(self, *args, **kwargs):
         """initialize an instance"""
 
