@@ -7,18 +7,21 @@ from models import storage
 
 
 class TestUser(unittest.TestCase):
+    """test user class"""
+
     def setUp(self):
-        storage.reload()
-    
-    def test_save_(self):
-        """Confirm that the attribute is stored in storage"""
+        """set up User class"""
+        self.user = User()
 
-        model = User()
-
-        # save the model to file
-        model.save()
+    def test_initialize(self):
+        """initialize User class"""
+        self.assertEqual(self.user.email, "")
+        self.assertEqual(self.user.password, "")
+        self.assertEqual(self.user.first_name, "")
+        self.assertEqual(self.user.last_name, "")
 
     def test_user_attributes(self):
+        """test attribute setup"""
         user = User()
         self.assertEqual(user.email, "")
         self.assertEqual(user.password, "")
@@ -26,6 +29,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.last_name, "")
 
     def test_user_creation(self):
+        """set values for attributes"""
         user = User(email="test@example.com", password="password",
                     first_name="John", last_name="Doe")
         self.assertEqual(user.email, "test@example.com")
@@ -34,6 +38,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.last_name, "Doe")
 
     def test_user_to_dict(self):
+        """set dictionary for user"""
         user = User(email="test@example.com", password="password",
                     first_name="John", last_name="Doe")
         user_dict = user.to_dict()
@@ -44,6 +49,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user_dict['last_name'], 'Doe')
 
     def test_user_from_dict(self):
+        """collect data from dict"""
         user_data = {
             '__class__': 'User',
             'id': '123',
