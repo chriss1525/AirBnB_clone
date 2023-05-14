@@ -15,7 +15,10 @@ class TestUser(unittest.TestCase):
 
     def test_initialize(self):
         """initialize User class"""
-        self.assertEqual(self.amenity.name, "")
+        self.assertEqual(self.user.email, "")
+        self.assertEqual(self.user.password, "")
+        self.assertEqual(self.user.first_name, "")
+        self.assertEqual(self.user.last_name, "")
 
     def test_user_attributes(self):
         """test attribute setup"""
