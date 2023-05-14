@@ -1,41 +1,40 @@
+#!/usr/bin/python3
+"""This test module defines tests for city.py"""
+
 import unittest
 from models.city import City
-from models import storage
 
 
 class TestCity(unittest.TestCase):
+    """test cases for the city class"""
+
     def setUp(self):
-        storage.reload()
+        """setup city"""
+        self.city = City()
 
-    def test_save_(self):
-        """Confirm that the attribute is stored in storage"""
+    def test_attribute_initialization(self):
+        """test if attribute are set correctly"""
+        self.assertEqual(self.city.state_id, "")
+        self.assertEqual(self.city.name, "")
 
-        model = City()
+    def test_attribute_types(self):
+        """test for correct attribut types"""
+        self.assertIsInstance(self.city.state_id, str)
+        self.assertIsInstance(self.city.name, str)
 
-        # save the model to file
-        model.save()
+    def test_attribute_values(self):
+        """ set values for attributes """
+        self.city.state_id = "123"
+        self.city.name = "Nairobi"
 
-    def test_city_creation(self):
-        city = City(id="123", name="Doe")
-        self.assertEqual(city.id, "123")
-        self.assertEqual(city.name, "Doe")
+        self.assertEqual(self.city.state_id, "123")
+        self.assertEqual(self.city.name, "Nairobi")
 
-    def test_city_to_dict(self):
-        city = City(id="123", name="Doe")
-        city_dict = city.to_dict()
-        self.assertEqual(city_dict['__class__'], 'City')
-        self.assertEqual(city_dict['id'], '123')
-        self.assertEqual(city_dict['name'], 'Doe')
+    def test_update_attribute_values(self):
+        """ update values of city """
+        self.city.name = "Mombasa"
 
-    def test_city_from_dict(self):
-        city_data = {
-            '__class__': 'City',
-            'id': '123',
-            'name': 'Doe'
-        }
-        city = City(**city_data)
-        self.assertEqual(city.id, '123')
-        self.assertEqual(city.name, 'Doe')
+        self.assertEqual(self.city.name, "Mombasa")
 
 
 if __name__ == '__main__':

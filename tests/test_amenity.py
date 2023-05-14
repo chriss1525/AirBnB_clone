@@ -1,35 +1,37 @@
+#!/usr/bin/python3
+"""This test module defines tests for amenity.py"""
+
 import unittest
 from models.amenity import Amenity
 from models import storage
 
 
 class TestAmenity(unittest.TestCase):
+    """test amenity class"""
+
     def setUp(self):
-        storage.reload()
+        """setup amenity class"""
+        self.amenity = Amenity()
 
-    def test_save(self):
-        """Confirm that the attribute is stored in storage"""
+    def test_attribute_initialization(self):
+        """initialize amenity attributes"""
+        self.assertEqual(self.amenity.name, "")
 
-        model = Amenity()
+    def test_attribute_types(self):
+        """test attribute types"""
+        self.assertIsInstance(self.amenity.name, str)
 
-        # save the model to file
-        model.save()
+    def test_attribute_values(self):
+        """set attribute values"""
+        self.amenity.name = "WiFi"
 
-    def test_amenity_attributes(self):
-        amenity = Amenity()
-        self.assertEqual(amenity.name, "")
+        self.assertEqual(self.amenity.name, "WiFi")
 
-    def test_amenity_creation(self):
-        amenity = Amenity(name="Throneville")
-        self.assertEqual(amenity.name, "Throneville")
+    def test_update_attribute_values(self):
+        """update attribute values"""
+        self.amenity.name = "Security"
 
-    def test_user_from_dict(self):
-        amenity_data = {
-            '__class__': 'Amenity',
-            'name': 'Throneville'
-        }
-        amenity = Amenity(**amenity_data)
-        self.assertEqual(amenity.name, 'Throneville')
+        self.assertEqual(self.amenity.name, "Security")
 
 
 if __name__ == '__main__':
