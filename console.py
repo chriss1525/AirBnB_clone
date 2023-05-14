@@ -185,9 +185,9 @@ class HBNBCommand(Cmd):
         try:
             record = self.find_record(class_name, instance_id)
 
-            if record is None:
-                print('** no instance found **')
-                return
+            # if record is None:
+            #     print('** no instance found **')
+            #     return
 
             retrieved_record = globals()[class_name](**record)
             setattr(retrieved_record, attribute, value)

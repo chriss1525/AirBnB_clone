@@ -84,22 +84,15 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertTrue(len(output) > 0)
 
-    # def test_update_command(self):
-    #     """
-    #     Test the update command.
-    #     """
-    #     with patch('sys.stdout', new=StringIO()) as f:
-    #         self.console.onecmd(
-    #             'update BaseModel 1234-5678-9012 name "John Doe"')
-    #         output = f.getvalue().strip()
-    #         self.assertEqual(output, "** no instance found **")
-
-    def test_help(self):
+    def test_update_command(self):
         """
-        Test the help command.
+        Test the update command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("help")
+            self.console.onecmd(
+                'update BaseModel 1234-5678-9012 name "John Doe"')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
 
 
 if __name__ == '__main__':
