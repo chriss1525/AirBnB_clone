@@ -28,42 +28,42 @@ class TestHBNBCommand(unittest.TestCase):
         """
         Test the quit command.
         """
-        with patch('sys.stdout', new=StringIO()) as fake_output:
+        with patch('sys.stdout', new=StringIO()) as f:
             self.assertTrue(self.console.onecmd('quit'))
-            self.assertEqual(fake_output.getvalue(), '')
+            self.assertEqual(f.getvalue(), '')
 
     def test_EOF_command(self):
         """
         Test the EOF command.
         """
-        with patch('sys.stdout', new=StringIO()) as fake_output:
+        with patch('sys.stdout', new=StringIO()) as f:
             self.assertTrue(self.console.onecmd('EOF'))
-            self.assertEqual(fake_output.getvalue(), '\n')
+            self.assertEqual(f.getvalue(), '\n')
 
     def test_emptyline_command(self):
         """
         Test the emptyline command.
         """
-        with patch('sys.stdout', new=StringIO()) as fake_output:
+        with patch('sys.stdout', new=StringIO()) as f:
             self.assertIsNone(self.console.onecmd(''))
-            self.assertEqual(fake_output.getvalue(), '')
+            self.assertEqual(f.getvalue(), '')
 
     def test_create_command(self):
         """
         Test the create command.
         """
-        with patch('sys.stdout', new=StringIO()) as fake_output:
+        with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd('create BaseModel')
-            output = fake_output.getvalue().strip()
+            output = f.getvalue().strip()
             self.assertTrue(len(output) > 0)
 
     def test_show_command(self):
         """
         Test the show command.
         """
-        with patch('sys.stdout', new=StringIO()) as fake_output:
+        with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd('show BaseModel 1234-5678-9012')
-            output = fake_output.getvalue().strip()
+            output = f.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
 
     def test_destroy_command(self):
