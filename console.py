@@ -38,19 +38,26 @@ class HBNBCommand(Cmd):
             elif not in_bracket and arg[i] in "(":
                 in_bracket = not in_bracket
             else:
-                parameters = arg[i:-1].split(",")
+                parameters = arg[i:-1].split(", ")
                 break
 
         return method_name, parameters
 
     def default(self, arg):
+        methods_with_arguments = ["show", "destroy", "update"]
         if '.' in arg:
             class_name, raw_method_name = arg.split(".", 1)
             method_name, params = self.get_method_and_params(
                 raw_method_name)
-            method = getattr(globals()[class_name], method_name)
-            results = method()
-            print(results)
+            try:
+                method = getattr(globals()[class_name], method_name)
+                if method_name in methods_with_arguments:
+                    results = method(params)
+                else:
+                    results = method()
+                print(results)
+            except Exception:
+                pass
         else:
             Cmd.default(self, arg)
 
