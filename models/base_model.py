@@ -15,6 +15,14 @@ class BaseModel:
     created_at and updated at
     """
 
+    @classmethod
+    def all(cls):
+        all = []
+        for obj in storage.all().values():
+            instance = cls(**obj)
+            all.append(instance.__str__())
+        return all
+
     def __init__(self, *args, **kwargs):
         """initialize an instance"""
 

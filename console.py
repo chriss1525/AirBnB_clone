@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """This module hosts the HBNBCommand class which inherits from the Cmd class.
 """
-import cmd
+from cmd import Cmd
 from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
@@ -13,7 +13,7 @@ from models.place import Place
 from models.review import Review
 
 
-class HBNBCommand(cmd.Cmd):
+class HBNBCommand(Cmd):
     """
     Entry point Class HBNBCommand
     defines a prompt (hbnb)
@@ -26,6 +26,33 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     __models = ["BaseModel", "User", "State",
                 "City", "Amenity", "Place", "Review"]
+
+    def get_method_and_params(self, arg):
+        method_name = ""
+        parameters = []
+        in_bracket = False
+
+        for i in range(len(arg)):
+            if not in_bracket and arg[i] not in "()":
+                method_name += arg[i]
+            elif not in_bracket and arg[i] in "(":
+                in_bracket = not in_bracket
+            else:
+                parameters = arg[i:-1].split(",")
+                break
+
+        return method_name, parameters
+
+    def default(self, arg):
+        if '.' in arg:
+            class_name, raw_method_name = arg.split(".", 1)
+            method_name, params = self.get_method_and_params(
+                raw_method_name)
+            method = getattr(globals()[class_name], method_name)
+            results = method()
+            print(results)
+        else:
+            Cmd.default(self, arg)
 
     def emptyline(self):
         """
