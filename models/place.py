@@ -18,6 +18,7 @@ class Place(BaseModel):
     This model defines the user
     it inherits from BaseModel
     """
+
     city_id = ""
     user_id = ""
     name = ""
@@ -29,6 +30,3 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
-
-    def save(self):
-        super().save()

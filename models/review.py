@@ -18,9 +18,7 @@ class Review(BaseModel):
     This model defines the user
     it inherits from BaseModel
     """
+
     place_id = ""
     user_id = ""
     text = ""
-
-    def save(self):
-        super().save()

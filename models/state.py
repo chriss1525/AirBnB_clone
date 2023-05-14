@@ -19,6 +19,3 @@ class State(BaseModel):
     it inherits from BaseModel
     """
     name = ""
-
-    def save(self):
-        super().save()

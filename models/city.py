@@ -18,8 +18,6 @@ class City(BaseModel):
     This model defines the user
     it inherits from BaseModel
     """
+
     state_id = ""
     name = ""
-
-    def save(self):
-        super().save()

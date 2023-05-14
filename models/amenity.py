@@ -20,6 +20,3 @@ class Amenity(BaseModel):
     """
 
     name = ""
-
-    def save(self):
-        super().save()

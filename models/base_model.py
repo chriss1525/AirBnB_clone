@@ -16,7 +16,7 @@ class BaseModel:
     """
 
     def __init__(self, *args, **kwargs):
-        """declare attributes"""
+        """initialize an instance"""
 
         if kwargs:
             for attr, value in kwargs.items():
@@ -34,7 +34,10 @@ class BaseModel:
             storage.new(self)
 
     def save(self):
-        """update class updated_at everytime the object is changed"""
+        """
+        update the public instance attribute updated_at everytime the object
+        is changed
+        """
         self.updated_at = datetime.now()
         storage.save()
 

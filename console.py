@@ -5,7 +5,6 @@ import cmd
 from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
-import sys
 from models.user import User
 from models.state import State
 from models.city import City
@@ -25,11 +24,13 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = '(hbnb) '
+    __models = ["BaseModel", "User", "State",
+                "City", "Amenity", "Place", "Review"]
 
     def emptyline(self):
         """
-        Override the default emptyline method to avoid repeating the last command
-        when an empty line is entered.
+        Override the default emptyline method to avoid repeating the last
+        command when an empty line is entered.
         """
         pass
 
@@ -53,26 +54,11 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = arg.strip()
-        class_name = arg.strip()
-        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
-            print('** class doesn\'t exist **')
+        if class_name not in self.__models:
+            print("** class doesn't exist **")
             return
 
-        if class_name == "User":
-            new_instance = User()
-        elif class_name == "State":
-            new_instance = State()
-        elif class_name == "City":
-            new_instance = City()
-        elif class_name == "Place":
-            new_instance = Place()
-        elif class_name == "Amenity":
-            new_instance = Amenity()
-        elif class_name == "Review":
-            new_instance = Review()
-        else:
-            new_instance = BaseModel()
-
+        new_instance = globals()[class_name]()
         new_instance.save()
         print(new_instance.id)
 
@@ -87,8 +73,10 @@ class HBNBCommand(cmd.Cmd):
         try:
             [class_name, instance_id] = self.get_args(arg)
 
-            # use globals() to extract string stored in class_name
-            # and use it to create instance using the record
+            if class_name not in self.__models:
+                print("** class doesn't exist **")
+                return
+
             record = self.find_record(class_name, instance_id)
             retrieved_record = globals()[class_name](**record)
             print(retrieved_record)
@@ -102,33 +90,14 @@ class HBNBCommand(cmd.Cmd):
         (hbnb) destroy BaseModel 1234-5665-4321
         """
 
-        args = self.get_args(arg)
-
-        if args is None:
-            print('** class name missing **')
-            return
-
-        [class_name, instance_id] = args
-
-        if not class_name:
-            print('** class name missing **')
-            return
-
-        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
-            print('** class doesn\'t exist **')
-            return
-
-        if not instance_id:
-            print('** instance id missing **')
-            return
-
-        record = self.find_record(class_name, instance_id)
-
-        if record is None:
-            print('** no instance found **')
-            return
-
         try:
+            [class_name, instance_id] = self.get_args(arg)
+
+            if class_name not in self.__models:
+                print("** class doesn't exist **")
+                return
+
+            record = self.find_record(class_name, instance_id)
             retrieved_record = globals()[class_name](**record)
             storage.destroy(retrieved_record)
         except Exception:
@@ -153,8 +122,8 @@ class HBNBCommand(cmd.Cmd):
             print(instance_list)
         else:
             class_name = arg.strip()
-            if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
-                print('** class doesn\'t exist **')
+            if class_name not in self.__models:
+                print("** class doesn\'t exist **")
                 return
             # Print instances of a specific class
             file_storage = storage._FileStorage__objects
@@ -178,16 +147,9 @@ class HBNBCommand(cmd.Cmd):
 
         [class_name, instance_id, attribute, value] = args
 
-        if class_name is None:
-            print('** class name missing **')
-            return
-
-        if instance_id is None:
-            print('** instance id missing **')
-            return
-
         try:
             record = self.find_record(class_name, instance_id)
+
             if record is None:
                 print('** no instance found **')
                 return
@@ -195,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
             retrieved_record = globals()[class_name](**record)
             setattr(retrieved_record, attribute, value)
             setattr(retrieved_record, "updated_at", datetime.now())
-            storage.save()
+            storage.new(retrieved_record)
         except Exception:
             pass
 
@@ -247,13 +209,13 @@ class HBNBCommand(cmd.Cmd):
         return None
 
     def find_record(self, class_name, instance_id):
+        # check if valid class_name
+        if class_name not in self.__models:
+            print("** class doesn't exist **")
+            return
+
         # retrieve all records in storage
         all = storage.all()
-
-        # check if valid class_name
-        if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
-            print('** class doesn\'t exist **')
-            return
 
         # check for matching record
         try:
@@ -261,6 +223,7 @@ class HBNBCommand(cmd.Cmd):
             return record
         except Exception:
             print("** no instance found **")
+            return None
 
 
 if __name__ == '__main__':
