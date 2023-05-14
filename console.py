@@ -29,8 +29,9 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """
-        Override the default emptyline method to avoid repeating the last
-        command when an empty line is entered.
+        Override the default emptyline method
+        to avoid repeating the last command
+        when an empty line is entered.
         """
         pass
 
