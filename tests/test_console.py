@@ -12,12 +12,6 @@ class TestHBNBCommand(unittest.TestCase):
     Unit tests for the HBNBCommand class
     """
 
-    def setUp(self):
-        """
-        Set up the test environment before each test method is executed.
-        """
-        self.console = HBNBCommand()
-
     def tearDown(self):
         """
         Clean up the test environment after each test method is executed.
@@ -29,7 +23,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the quit command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertTrue(self.console.onecmd('quit'))
+            self.assertTrue(HBNBCommand().onecmd('quit'))
             self.assertEqual(f.getvalue(), '')
 
     def test_EOF_command(self):
@@ -37,7 +31,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the EOF command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertTrue(self.console.onecmd('EOF'))
+            self.assertTrue(HBNBCommand().onecmd('EOF'))
             self.assertEqual(f.getvalue(), '\n')
 
     def test_emptyline_command(self):
@@ -45,7 +39,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the emptyline command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.assertIsNone(self.console.onecmd(''))
+            self.assertIsNone(HBNBCommand().onecmd(''))
             self.assertEqual(f.getvalue(), '')
 
     def test_create_command(self):
@@ -53,7 +47,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the create command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('create BaseModel')
+            HBNBCommand().onecmd('create BaseModel')
             output = f.getvalue().strip()
             self.assertTrue(len(output) > 0)
 
@@ -62,7 +56,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the show command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('show BaseModel 1234-5678-9012')
+            HBNBCommand().onecmd('show BaseModel 1234-5678-9012')
             output = f.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
 
@@ -71,7 +65,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the destroy command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('destroy BaseModel 1234-5678-9012')
+            HBNBCommand().onecmd('destroy BaseModel 1234-5678-9012')
             output = f.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
 
@@ -80,7 +74,7 @@ class TestHBNBCommand(unittest.TestCase):
         Test the all command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('all')
+            HBNBCommand().onecmd('all')
             output = f.getvalue().strip()
             self.assertTrue(len(output) > 0)
 
@@ -89,10 +83,21 @@ class TestHBNBCommand(unittest.TestCase):
         Test the update command.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(
+            HBNBCommand().onecmd(
                 'update BaseModel 1234-5678-9012 name "John Doe"')
             output = f.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
+
+    def test_help(self):
+        """
+        Test the help command.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("help")
+            output = f.getvalue().strip()
+            self.assertIn('Documented commands', output)
+            self.assertIn(
+                'EOF  all  create  destroy  help  quit  show  update', output)
 
 
 if __name__ == '__main__':
