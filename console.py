@@ -23,6 +23,8 @@ class HBNBCommand(Cmd):
         do_EOF - handles exit using EOF
     """
 
+    # get local objects
+    __locals = locals()
     prompt = '(hbnb) '
     __models = ["BaseModel", "User", "State",
                 "City", "Amenity", "Place", "Review"]
@@ -44,20 +46,13 @@ class HBNBCommand(Cmd):
         return method_name, parameters
 
     def default(self, arg):
-        methods_with_arguments = ["show", "destroy", "update"]
         if '.' in arg:
             class_name, raw_method_name = arg.split(".", 1)
             method_name, params = self.get_method_and_params(
                 raw_method_name)
-            try:
-                method = getattr(globals()[class_name], method_name)
-                if method_name in methods_with_arguments:
-                    results = method(params)
-                else:
-                    results = method()
-                print(results)
-            except Exception:
-                pass
+
+            string_params = " ".join([class_name, " ".join(params)])
+            self.__locals["do_" + method_name](self, string_params)
         else:
             Cmd.default(self, arg)
 
@@ -85,7 +80,7 @@ class HBNBCommand(Cmd):
         (hbnb) create BaseModel
         """
         if not arg:
-            print('** class name missing ** ')
+            print('** class name missing **')
             return
 
         class_name = arg.strip()

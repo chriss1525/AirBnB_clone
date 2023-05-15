@@ -9,6 +9,12 @@ from models.base_model import BaseModel
 class TestBaseModel(unittest.TestCase):
     """Test suite for the model BaseModel"""
 
+    def test_save(self):
+        """Confirm save method works"""
+
+        model = BaseModel()
+        model.save()
+
     def test_save_updates_updated_at(self):
         """Confirm that the attribute updated_at is updated when the method
         save is called"""
