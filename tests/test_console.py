@@ -189,6 +189,15 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "** no instance found **")
 
+    def test_base_model_destroy_command(self):
+        """
+        Test the destroy command for BaseModel class.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('destroy BaseModel 1234-5678-9012')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
 
 if __name__ == '__main__':
     unittest.main()
