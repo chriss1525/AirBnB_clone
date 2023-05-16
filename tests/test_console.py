@@ -162,6 +162,33 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, '** instance id missing **')
 
+    def test_user_show_command(self):
+        """
+        Test the show command for User class.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('show User 1234-5678-9012')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
+    def test_user_destroy_command(self):
+        """
+        Test the destroy command for User class.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('destroy User 1234-5678-9012')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
+    def test_base_model_show_command(self):
+        """
+        Test the show command for BaseModel class.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('show BaseModel 1234-5678-9012')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
 
 if __name__ == '__main__':
     unittest.main()
